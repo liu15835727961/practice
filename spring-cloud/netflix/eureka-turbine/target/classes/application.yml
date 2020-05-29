@@ -1,0 +1,14 @@
+server:
+  port: 8000
+spring:
+  application:
+    name: eureka-turbine
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7000/eureka/
+  instance:
+    prefer-ip-address: true #使用ip地址注册
+turbine:
+  app-config: eureka-client-movies
+  cluster-name-expression: "'default'"

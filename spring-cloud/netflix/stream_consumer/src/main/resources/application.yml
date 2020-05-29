@@ -1,0 +1,17 @@
+server:
+  port: 9052
+spring:
+  application:
+    name: rabbitmq-consumer
+  rabbitmq:
+    addresses: 127.0.0.1
+    username: guest
+    password: guest
+  cloud:
+    stream:
+      bindings:  #绑定一个通道
+        input: #内置获取消息的通道
+          destination: xyy-default
+      binders: #配置绑定器
+        defaultRabbit:
+          type: rabbit #消息队列的类型

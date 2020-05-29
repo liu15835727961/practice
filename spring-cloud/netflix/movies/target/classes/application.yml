@@ -1,0 +1,63 @@
+spring:
+  application:
+    name: eureka-client-movies
+  zipkin:
+    base-url: http://127.0.0.1:9411/ #zipkin服务端地址
+    sender:
+      type: web #数据传送方式
+  sleuth:
+    sampler:
+      probability: 1 #采样比
+server:
+  port: 9000
+#配置eureka
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7000/eureka/
+  instance:
+    prefer-ip-address: true #使用ip地址注册
+    instance-id: ${spring.cloud.client.ip-address}:${server.port} #向注册中心注册服务id
+feign: #配置feign的日志输出 NONE:不输出日志(性能高),BASIC(适用于生产环境追踪问题),HEADERS:在BASIC的基础上记录请求和响应头信息,FULL:记录所有
+  client:
+    config:
+      eureka-client-user:
+        loggerLevel: FULL
+  hystrix:
+    enabled: true
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          #strategy: ExecutionIsolationStrategy.THREAD #配置隔离策略 ExecutionIsolationStrategy.SEMAPHORE 信号量隔离 ExecutionIsolationStrategy.THREAD 线程池隔离
+          #maxConcurrentRequests: #最大信号量上限
+          thread:
+            timeoutInMilliseconds: 3000 #默认的连接超时时间是1s,若一秒没有返回数据自动触发降级逻辑
+      circuitBreaker:
+        requestVolumeThreshold: 20 #触发熔断的最小请求次数20 /10(s)
+        sleepWindowInMilliseconds: 5000 #熔断多少秒后去尝试请求
+        errorThresholdPercentage: 50 #触发熔断的失败请求最小占比,默认50%
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+logging:
+  root:
+    level: info
+    org.springframework.web.servlet.DispatcherServlet: DEBUG
+    org.springframework.cloud.sleuth: DEBUG
+#feign:
+#  client:
+#    config:
+#     feignName: #定义FeignClient的名称
+#        connectTimeout: 5000 #相当于Request.Options
+#        readtimeout: 5000 #相当于Request.Options
+#       loggerLevel: full #配置Feign的日志级别,相当于代码配置方式的logger
+#       errorDecoder: #Feign的请求解码器相当于代码中配置ErrorDecoder
+#        retryer: #配置重试,相当于代码配置方式的retryer
+#        requestInterceptors: #配置拦截器,相当于代码配置方式中的RequestInterceptor
+#          -com.xyy.controller.XXX
+#         -com.xyy.service.XXX
+#        decode404: false #配置熔断不出来404异常

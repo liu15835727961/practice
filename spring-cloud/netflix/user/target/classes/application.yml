@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: eureka-client-user
+  zipkin:
+    base-url: http://127.0.0.1:9411/ #zipkin服务端地址
+    sender:
+      type: web #数据传送方式
+  sleuth:
+    sampler:
+      probability: 1 #采样比
+server:
+  port: 9050
+#配置eureka
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7000/eureka/
+  instance:
+    prefer-ip-address: true
+eureka-client-user:
+  ribbon:
+    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RoundRobinRule
+    ConnectTimeout: 250 #Ribbon的连接超时时间
+    ReadTimeout: 1000 #Ribbon的数据连接超时时间
+    OkToRetryOnAllOperations: true #是否对所有操作进行重试
+    MaxAutoRetriesNextServer: 1 #切换实例的重试次数
+    MaxAutoRetries: 1 #当前实例的重试次数
+logging:
+  root:
+    level: info
+    org.springframework.web.servlet.DispatcherServlet: DEBUG
+    org.springframework.cloud.sleuth: DEBUG

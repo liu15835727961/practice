@@ -1,0 +1,46 @@
+server:
+  port: 10000
+spring:
+  application:
+    name: eureka-zuul-server
+  zipkin:
+    #base-url: http://127.0.0.1:9411/ #zipkin服务端地址
+    sender:
+      type: rabbit #向rabbitmq中发送消息
+    #type: web #数据传送方式,以http的形式向server端发送数据
+  sleuth:
+    sampler:
+      probability: 1 #采样比
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+    listener:
+      direct:
+        retry:
+          enabled: true
+      simple:
+        retry:
+          enabled: true
+###基础路由配置
+zuul:
+  routes:
+    test:
+      path: /movies/** #映射路径
+      #url: http://127.0.0.1:9000/           #时机访问路径
+      serviceId: eureka-client-movies #根据服务名称填写映射
+      #eureka-client-movies: /eureka-client-movies/** #简化路由配置,服务名和映射必须相同
+      #如果当前服务名eureka-client-movies那么他的默认映射路径是/eureka-client-movies/**
+#配置eureka
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7000/eureka/
+  instance:
+    prefer-ip-address: true #使用ip地址注册
+logging:
+  root:
+    level: info
+    org.springframework.web.servlet.DispatcherServlet: DEBUG
+    org.springframework.cloud.sleuth: DEBUG
