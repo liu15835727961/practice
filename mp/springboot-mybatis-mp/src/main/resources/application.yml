@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: spring-boot-mybatis-MP
+  datasource:
+    driver-class-name: oracle.jdbc.OracleDriver #com.mysql.jdbc.Driver
+    url: jdbc:oracle:thin:@127.0.0.1:1521/orcl
+    #jdbc:mysql://127.0.0.1:3307/mp?useUnicode=true&charaterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&userSSl=true&serverTimezone=UTC
+    username: SPMAN_ADMIN
+    password: SPMAN__XYY
+mybatis-plus:
+  #指定全局的配置文件,与configuration相关配置不能共存
+  config-location: classpath:mybatis-config.xml
+  #指定mapper.xml文件的路径
+  mapper-locations: classpath:mapper/*.xml
+  #实体类对象扫描包
+  type-aliases-package: com.xyy.entity
+  #configuration:
+    #是否禁用自定的驼峰映射
+    #map-underscore-to-camel-case: true
+    # 是否将sql打印到控制面板(该配置会将sql语句和查询的结果都打印到控制台)
+    #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    #是否禁用二级缓存
+    #cache-enabled: true
+  global-config:
+    db-config:
+      #全局的id生成策略  mysql的id策略auto
+      id-type: input
+      #全局表名的前缀
+      table-prefix: tb_
+      logic-delete-value: 1 #逻辑删除
+      logic-not-delete-value: 0 #逻辑未删除
+  type-enums-package: com.xyy.enums
+#maven编译ojbc8命令:mvn install-file -DgroupId=com.oracle -DartifactId=ojdbc8 -Dversion=12.1.0.1 -Dpackaging=jar  -Dfile=ojbc8.jar

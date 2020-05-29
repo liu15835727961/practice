@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <plugins>
+        <plugin interceptor="com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor"/>
+        <!--性能分析插件,该插件 3.2.0 以上版本移除推荐使用第三方扩展p6spy  执行SQL分析打印 功能-->
+        <plugin interceptor="com.baomidou.mybatisplus.extension.plugins.PerformanceInterceptor">
+            <!--最大的执行时间,单位为毫秒-->
+            <property name="maxTime" value="100"/>
+            <!--对输出的SQL做格式化,默认为false-->
+            <property name="format" value="true"/>
+        </plugin>
+    </plugins>
+</configuration>
